@@ -1,0 +1,25 @@
+server:
+  port: 8028
+
+dbank:
+  api:
+     secret:
+        key: u844sTMt0mFkDiFMZ7bafMz4ZXal9tStoQ15VNPoDXG
+  business:
+     default:
+        agency: 326
+
+spring:
+  application:
+    name: dbank-backend
+  
+  datasource:
+     postgres:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/dbank?currentSchema=dbank
+        username: user_dbank
+        password: dbank123
+        hikari:
+          maximum-pool-size: 5
+          minimum-idle: 2
+          connection-timeout: 30000
