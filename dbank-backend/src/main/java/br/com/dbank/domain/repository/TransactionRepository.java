@@ -1,8 +1,7 @@
 package br.com.dbank.domain.repository;
 
+import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.domain.Page;
 
 import br.com.dbank.domain.model.Transaction;
 
@@ -14,6 +13,6 @@ public interface TransactionRepository  {
 
 	Optional<Transaction> findByIdempotencyKey(String idempotencyKey);
 	
-	Page<Transaction> findByAccountId(String accountId);
+	List<Transaction> findAllByAccountId(String accountId);
 
 }

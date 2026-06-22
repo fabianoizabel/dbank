@@ -1,9 +1,10 @@
 package br.com.dbank.adapters.outbound.database;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 import br.com.dbank.adapters.outbound.database.entity.TransactionEntity;
@@ -32,7 +33,8 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
 	}
 
 	private Optional<Transaction> mapToDomain(TransactionEntity entity) {
-		Transaction transaction = factory.build(entity.getIdempotencyKey(),
+		Transaction transaction = factory.build(entity.getTransactionID(),
+												entity.getIdempotencyKey(),
 												entity.getSourceAccountID(), 
 												entity.getDestinationAccountID(),
 												entity.getAmount(),
@@ -66,9 +68,14 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
 	}
 
 	@Override
-	public Page<Transaction> findByAccountId(String accountId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Transaction> findAllByAccountId(String accountId) {
+		List<Transaction> result = new ArrayList<Transaction>();
+		List<TransactionEntity> transactions = jpaRepository.findAllByAccountId(accountId);
+		if (transactions != null && transactions.size() > 0) {
+			for (TransactionEntity transaction: transactions)
+				result.add(mapToDomain(transaction).get());
+		}
+		return result;
 	}
 
 	@Override

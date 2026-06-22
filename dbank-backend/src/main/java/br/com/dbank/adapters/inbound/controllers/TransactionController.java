@@ -15,11 +15,11 @@ import br.com.dbank.usecases.CreateTransferUseCase;
 
 @RestController
 @RequestMapping("/dbank/api/v1/transfer")
-public class TransferController {
+public class TransactionController {
 
 	private final CreateTransferUseCase useCase;
 
-    public TransferController(CreateTransferUseCase useCase) {
+    public TransactionController(CreateTransferUseCase useCase) {
         this.useCase = useCase;
     }
 
@@ -43,5 +43,5 @@ public class TransferController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(response);
         }
-    }	
+    }
 }

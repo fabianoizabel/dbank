@@ -49,7 +49,8 @@ src
 │   │       ├── domain
 │   │       ├── application
 │   │       ├── adapters
-│   │       └── config
+│   │       ├── config
+│   │       └── usecases
 │   └── resources
 │
 └── test

@@ -26,10 +26,11 @@ public class TransactionFactoryImpl implements TransactionFactory {
 	}
 
 	@Override
-	public Transaction build(String idempotencyID, String sourceAccountId, String destinationAccountId,
+	public Transaction build(Long transactionID, String idempotencyID, String sourceAccountId, String destinationAccountId,
 			BigDecimal amount, String description, TransactionType type, OffsetDateTime createdAt,
 			OffsetDateTime updatedAt) {
 		return Transaction.builder()
+				.transactionID(transactionID)
 				.idempotencyKey(idempotencyID)
 				.sourceAccountID(sourceAccountId)
 				.destinationAccountID(destinationAccountId)

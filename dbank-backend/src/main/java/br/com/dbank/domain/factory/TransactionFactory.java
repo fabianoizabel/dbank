@@ -15,7 +15,8 @@ public interface TransactionFactory {
 			String description,	
 			TransactionType type);
 
-	Transaction build(String idempotencyID, 
+	Transaction build( Long transactionID,
+						String idempotencyID, 
 						String sourceAccountId, 
 						String destinationAccountId, 
 						BigDecimal amount, 
