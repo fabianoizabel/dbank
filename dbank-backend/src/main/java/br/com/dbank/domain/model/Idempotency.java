@@ -12,9 +12,8 @@ public class Idempotency {
 	Long idempotencyID;
 	String idempotencyKey;
 	String operationType;
-	String requestHash;
 	String responseBody;	
-	Integer httpStatus;
 	OffsetDateTime createdAt;
+	OffsetDateTime updatedAt;
 
 }

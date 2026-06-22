@@ -1,5 +1,7 @@
 package br.com.dbank.domain.repository;
 
+import java.util.Optional;
+
 import br.com.dbank.domain.model.Account;
 
 public interface AccountRepository {
@@ -8,4 +10,7 @@ public interface AccountRepository {
 
 	Long nextAccountNumber();
 
+	Optional<Account> findById(String accountId);
+	
+	Optional<Account> findByIdForUpdate(String accountId);
 }

@@ -22,7 +22,7 @@ public class ClientRepositoryAdapter implements ClientRepository {
 	@Override
 	public Client save(Client client) {
 		ClientEntity entity = mapToEntity(client);
-		ClientEntity saved = jpaRepository.save(entity);
+		ClientEntity saved = jpaRepository.saveAndFlush(entity);
 		return mapToDomain(saved).get();
 	}
 

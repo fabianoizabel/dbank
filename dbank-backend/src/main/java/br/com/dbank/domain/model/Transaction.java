@@ -11,11 +11,12 @@ import lombok.Value;
 public class Transaction {
 
 	Long transactionID;
-	String idempotencyID;
-	String accountID;
+	String idempotencyKey;
+	String sourceAccountID;
+	String destinationAccountID;
 	String description;
-	String type;
-	BigDecimal value;
+	TransactionType type;
+	BigDecimal amount;
 	OffsetDateTime createdAt;
 	OffsetDateTime updatedAt;
 

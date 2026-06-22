@@ -26,7 +26,7 @@ public class AccountRepositoryAdapter implements AccountRepository {
 	@Override
 	public Account save(Account account) {
 		AccountEntity entity = mapToEntity(account);
-		AccountEntity saved  = jpaRepository.save(entity);
+		AccountEntity saved  = jpaRepository.saveAndFlush(entity);
 		return mapToDomain(saved).get();
 	}
 
@@ -46,7 +46,11 @@ public class AccountRepositoryAdapter implements AccountRepository {
 	}
 
 	private AccountEntity mapToEntity(Account account) {
-		AccountEntity entity = new AccountEntity();
+		AccountEntity entity 				= new AccountEntity();
+		Optional<AccountEntity> optional 	= jpaRepository.findById(account.getAccountID());
+		if (optional != null && optional.isPresent())
+			entity = optional.get();
+		
 		Optional<ClientEntity> clientEntity = clientJpaRepository.findById(account.getClientID());
 		if (clientEntity == null || !clientEntity.isPresent())
 			entity.setClientId(null);
@@ -65,5 +69,21 @@ public class AccountRepositoryAdapter implements AccountRepository {
 	@Override
 	public Long nextAccountNumber() {
 		return jpaRepository.getNextAccountNumber();
+	}
+
+	@Override
+	public Optional<Account> findById(String accountId) {
+		Optional<AccountEntity> entity = jpaRepository.findById(accountId);
+		if (entity.isPresent())
+			return mapToDomain(entity.get());
+		return null;
+	}
+
+	@Override
+	public Optional<Account> findByIdForUpdate(String accountId) {
+		Optional<AccountEntity> entity = jpaRepository.findByIdForUpdate(accountId);
+		if (entity.isPresent())
+			return mapToDomain(entity.get());
+		return null;
 	}
 }
