@@ -47,10 +47,11 @@ public class AccountRepositoryAdapter implements AccountRepository {
 
 	private AccountEntity mapToEntity(Account account) {
 		AccountEntity entity 				= new AccountEntity();
-		Optional<AccountEntity> optional 	= jpaRepository.findById(account.getAccountID());
-		if (optional != null && optional.isPresent())
-			entity = optional.get();
-		
+		if (account.getAccountID() != null) {
+			Optional<AccountEntity> optional 	= jpaRepository.findById(account.getAccountID());
+			if (optional != null && optional.isPresent())
+				entity = optional.get();
+		}
 		Optional<ClientEntity> clientEntity = clientJpaRepository.findById(account.getClientID());
 		if (clientEntity == null || !clientEntity.isPresent())
 			entity.setClientId(null);

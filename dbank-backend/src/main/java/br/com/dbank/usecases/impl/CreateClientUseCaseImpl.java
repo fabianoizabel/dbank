@@ -43,7 +43,6 @@ public class CreateClientUseCaseImpl implements CreateClientUseCase {
 		Client newClient 	= mapToClient(command);
 		Client savedClient 	= repository.save(newClient);
 		
-
 		Account newAccount	= accountFactory.createInitialAccount(savedClient.getClientID(), 
 																  this.defaultAgency, 
 																  accountRepository.nextAccountNumber());
