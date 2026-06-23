@@ -83,7 +83,7 @@ git --version
 ```bash
 git clone https://github.com/fabianoizabel/dbank.git
 
-cd dbank-backenb
+cd dbank-backend
 ```
 
 ---
