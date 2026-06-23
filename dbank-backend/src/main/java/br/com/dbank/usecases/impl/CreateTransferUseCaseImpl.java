@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 
 import br.com.dbank.adapters.inbound.response.TransactionResponse;
 import br.com.dbank.application.commands.CreateTransferCommand;
+import br.com.dbank.application.event.DomainEventPublisher;
 import br.com.dbank.application.exceptions.AccountNotFoundException;
 import br.com.dbank.application.exceptions.IdempotencyNotSavedException;
 import br.com.dbank.application.exceptions.InsufficientBalanceException;
 import br.com.dbank.application.exceptions.InvalidAmountException;
 import br.com.dbank.application.exceptions.TransactionNotFoundException;
+import br.com.dbank.domain.event.TransferCompletedEvent;
 import br.com.dbank.domain.factory.IdempotencyFactory;
 import br.com.dbank.domain.factory.TransactionFactory;
 import br.com.dbank.domain.model.Account;
@@ -34,15 +36,22 @@ public class CreateTransferUseCaseImpl implements CreateTransferUseCase {
 	private final IdempotencyRepository idempotencyRepository;
 	private final IdempotencyFactory idempotencyFactory;
 	private final JacksonConfig jacksonConfig;
-
+	private final DomainEventPublisher domainEventPublisher;
 	
-	public CreateTransferUseCaseImpl(TransactionRepository repository, TransactionFactory factory, AccountRepository accountRepository, IdempotencyRepository idempotencyRepository, IdempotencyFactory idempotencyFactory , JacksonConfig jacksonConfig) {
+	public CreateTransferUseCaseImpl(TransactionRepository repository, 
+										TransactionFactory factory, 
+										AccountRepository accountRepository, 
+										IdempotencyRepository idempotencyRepository, 
+										IdempotencyFactory idempotencyFactory , 
+										JacksonConfig jacksonConfig,
+										DomainEventPublisher domainEventPublisher) {
         this.repository 			= repository;
         this.factory				= factory;
         this.accountRepository 		= accountRepository;
         this.idempotencyRepository	= idempotencyRepository;
         this.idempotencyFactory		= idempotencyFactory;
         this.jacksonConfig			= jacksonConfig;
+        this.domainEventPublisher	= domainEventPublisher;
 	}
 	
 	@Override
@@ -87,6 +96,14 @@ public class CreateTransferUseCaseImpl implements CreateTransferUseCase {
 													TransactionType.TRANSFER);
 
 		Transaction savedTransaction = repository.save(newTransaction);
+
+		TransferCompletedEvent event = new TransferCompletedEvent(savedTransaction.getTransactionID(),
+                													sourceAccount.get().getNumber(),
+                													destinationAccount.get().getNumber(),
+                													savedTransaction.getAmount(),
+                													savedTransaction.getCreatedAt());
+
+		domainEventPublisher.publish(event);
 
 		TransactionResponse response	= mapToResponse(savedTransaction);
 		return response;

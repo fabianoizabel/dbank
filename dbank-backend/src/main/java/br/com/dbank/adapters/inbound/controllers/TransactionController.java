@@ -35,7 +35,7 @@ public class TransactionController {
         try {
             TransactionResponse response = useCase.execute(command);
             return ResponseEntity
-                    .status(HttpStatus.CREATED)
+                    .status(HttpStatus.OK)
                     .body(response);
         } catch (Exception e) {
         	ErrorResponse response = new ErrorResponse(e.getMessage());

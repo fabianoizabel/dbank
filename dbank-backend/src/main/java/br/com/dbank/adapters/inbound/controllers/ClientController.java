@@ -36,7 +36,7 @@ public class ClientController {
         try {
             ClientResponse response = useCase.execute(command);
             return ResponseEntity
-                    .status(HttpStatus.CREATED)
+                    .status(HttpStatus.OK)
                     .body(response);
         } catch (ClientDocumentAlreadyExistsException clientException) {
         	ErrorResponse response = new ErrorResponse(clientException.getMessage());

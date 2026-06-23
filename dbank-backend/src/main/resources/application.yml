@@ -23,3 +23,16 @@ spring:
           maximum-pool-size: 5
           minimum-idle: 2
           connection-timeout: 30000
+
+openapi: 3.0.3
+info:
+   title: Protected API
+   version: 1.0.0
+security:
+   - bearerAuth: []
+components:
+   securitySchemes:
+   bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

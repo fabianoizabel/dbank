@@ -24,7 +24,9 @@ public class SecurityConfig {
                     session.sessionCreationPolicy(
                             SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/dbank/api/v1/public/**").permitAll() 
+                    .requestMatchers("/dbank/api/v1/public/**").permitAll()
+                    .requestMatchers("/v3/api-docs/**").permitAll()
+                    .requestMatchers("/swagger-ui/**").permitAll()
                     .anyRequest().authenticated())
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

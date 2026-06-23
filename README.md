@@ -383,11 +383,28 @@ Resposta:
 
 ```json
 [
-  {
-    "transactionId": "987654",
+ {
+    "transactionID": 2,
+    "idempotencyID": "KEY-2206",
+    "sourceAccountID": "bba7e70d-db34-41c2-bc61-e4ff3953cd60",
+    "destinationAccountID": "6d85c74b-c79b-4723-a289-146977609453",
+    "description": "Transferencia entre contas [30021 para 04254]",
     "type": "TRANSFER",
-    "amount": 200.00
-  }
+    "amount": 10,
+    "createdAt": "2026-06-22T16:01:33.847517Z",
+    "updatedAt": "2026-06-22T16:01:33.847517Z"
+  },
+  {
+    "transactionID": 3,
+    "idempotencyID": "KEY-2207",
+    "sourceAccountID": "bba7e70d-db34-41c2-bc61-e4ff3953cd60",
+    "destinationAccountID": "6d85c74b-c79b-4723-a289-146977609453",
+    "description": "Transferencia entre contas [30021 para 04254]",
+    "type": "TRANSFER",
+    "amount": 5,
+    "createdAt": "2026-06-22T18:07:52.11561Z",
+    "updatedAt": "2026-06-22T18:07:52.11561Z"
+  }, ...
 ]
 ```
 
@@ -395,20 +412,7 @@ Resposta:
 
 # Controle de Idempotência
 
-Operações financeiras exigem o envio do cabeçalho:
-
-```http
-Idempotency-Key
-```
-
-Exemplo:
-
-```http
-Idempotency-Key:
-fcd7d5e6-c5f9-49e4-aed2-7fd743ddfc77
-```
-
-Caso uma mesma requisição seja enviada novamente com a mesma chave, a API retornará a resposta previamente registrada sem reprocessar a operação financeira.
+Caso uma mesma transferência seja enviada novamente com a mesma chave de idempotência, a API retornará a transação previamente registrada sem reprocessar a operação financeira.
 
 ---
 
@@ -420,6 +424,7 @@ A API utiliza:
 * Spring Security
 * Senhas criptografadas com BCrypt
 * Endpoints protegidos por Bearer Token
+* Spring Events assíncrono, para a notificação de transferência
 
 ---
 
@@ -485,6 +490,9 @@ build/reports/tests/test/index.html
 
 ---
 
+# Swagger
+Disponível em http://localhost:8080/swagger-ui/index.html
+
 # Considerações Arquiteturais
 
 A solução implementa:
@@ -496,6 +504,7 @@ A solução implementa:
 * Idempotência para operações financeiras
 * Persistência transacional utilizando PostgreSQL
 * Testes unitários e de integração
+* Spring Events assíncrono, para a notificação de transferência
 
 ---
 
