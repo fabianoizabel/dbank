@@ -435,7 +435,7 @@ A API utiliza:
 3. Executar:
 
 ```text
-DBankApplication
+DbankBackendApplication
 ```
 
 4. Garantir que o container PostgreSQL esteja ativo
@@ -447,7 +447,7 @@ DBankApplication
 Acessar:
 
 ```bash
-docker exec -it postgres-db psql -U dbank -d dbank
+docker exec -it postgres-db psql -U user_dbank -d dbank123
 ```
 
 Listar tabelas:
